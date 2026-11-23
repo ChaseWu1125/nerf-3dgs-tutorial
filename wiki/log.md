@@ -56,6 +56,6 @@ AI 下載 6 篇論文 → 轉文字 → 讀 abstract / intro / method / limitati
 | tools/check_deck.py：出處標註、Wiki 連結存在、數字 ⊂ Wiki | ✅ 19/19 |
 | 誤解清單 M1–M10 人工比對 | ✅ 無違反 |
 | 版面高度估算（可用 ≤ 920px） | ⚠ gs-idea ≈ 968px、vr-intuition ≈ 905px → 縮小 padding/gap，重新發布 v7 |
-| 視覺預覽（headless Chrome） | ⚠ 本機沒有產生截圖 → 改用規格估算；列為待改進 |
+| 視覺預覽（headless Chrome） | ⚠ 本機沒有產生截圖 → 改用規格估算 |
 
 **workflow 修改**：版面預算從「生成後檢查」提前到「擬大綱」階段。
