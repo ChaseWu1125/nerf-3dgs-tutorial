@@ -16,8 +16,8 @@
 | Wiki 規模 | 21 頁：6 個來源頁、11 個概念頁、1 個比較頁、1 份誤解檢查清單、index、log |
 | 結構 | `raw/`（PDF 和抽出的文字）→ `wiki/sources/` → `wiki/concepts/` → `wiki/comparisons/`，加上 `wiki/misconceptions.md` |
 
-**Wiki 連結：** [請填入：例如把 `wiki/` 推到 GitHub 後的連結]
-**教學 HTML 簡報：** `slides/index.html`（單一 HTML 檔，可直接用瀏覽器開啟；連結：[請填入：例如 GitHub Pages 網址]）
+**Wiki 連結：** https://github.com/ChaseWu1125/nerf-3dgs-tutorial/tree/main/wiki
+**教學 HTML 簡報：** `slides/index.html`（單一 HTML 檔，可直接用瀏覽器開啟；連結：https://chasewu1125.github.io/nerf-3dgs-tutorial/slides/ ）
 
 ---
 
