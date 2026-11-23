@@ -1,0 +1,35 @@
+<section id="problem">
+<p class="eyebrow">01 · 問題定義</p>
+<h2 class="title">幾張照片，能從任何角度看嗎？</h2>
+<div class="row" style="align-items:center; gap:64px;">
+<div class="col" style="width:820px;">
+<p class="lead">手機繞著一盆花拍 50 張照片，之後能在螢幕上用<span class="hl">任何角度、任何路徑</span>飛過這盆花——包括你<b>沒有拍過</b>的角度。</p>
+<p class="callout">這個任務叫做<b>新視角合成（Novel View Synthesis）</b>：<br>輸入＝照片＋相機位姿；輸出＝新視角的照片。</p>
+<p class="small">應用：VR/AR、數位分身、機器人導航、文物保存、自駕模擬</p>
+</div>
+<div style="position:relative; width:780px; height:620px;">
+<svg aria-label="中央一盆花，周圍有多台藍色相機代表已拍攝的照片，一台橘色虛線相機代表要合成的新視角" width="780" height="620" viewBox="0 0 780 620" style="position:absolute; left:0; top:0; width:780px; height:620px;">
+<circle cx="390" cy="310" r="230" fill="none" stroke="#C9C2B3" stroke-width="3" stroke-dasharray="10 10"/>
+<circle cx="390" cy="310" r="70" fill="#F6DCC8"/>
+<circle cx="390" cy="250" r="34" fill="#D9692A" opacity="0.8"/>
+<circle cx="440" cy="300" r="34" fill="#D9692A" opacity="0.8"/>
+<circle cx="340" cy="300" r="34" fill="#D9692A" opacity="0.8"/>
+<circle cx="365" cy="355" r="34" fill="#D9692A" opacity="0.8"/>
+<circle cx="415" cy="355" r="34" fill="#D9692A" opacity="0.8"/>
+<circle cx="390" cy="308" r="22" fill="#F3D27A"/>
+<rect x="160" y="290" width="56" height="40" rx="8" fill="#2F6DB5"/>
+<rect x="564" y="290" width="56" height="40" rx="8" fill="#2F6DB5"/>
+<rect x="362" y="60" width="56" height="40" rx="8" fill="#2F6DB5"/>
+<rect x="362" y="520" width="56" height="40" rx="8" fill="#2F6DB5"/>
+<rect x="210" y="120" width="56" height="40" rx="8" fill="#2F6DB5"/>
+<rect x="514" y="460" width="56" height="40" rx="8" fill="#2F6DB5"/>
+<rect x="514" y="120" width="56" height="40" rx="8" fill="#F7F5F0" stroke="#D9692A" stroke-width="5" stroke-dasharray="8 6"/>
+<line x1="542" y1="160" x2="430" y2="270" stroke="#D9692A" stroke-width="4" stroke-dasharray="8 6"/>
+</svg>
+<p class="small" style="position:absolute; left:470px; top:60px; width:300px; color:var(--accent); font-weight:700;">新視角（沒拍過）</p>
+<p class="small" style="position:absolute; left:40px; top:570px; width:400px; color:var(--blue); font-weight:700;">藍色＝已拍的照片</p>
+</div>
+</div>
+<div class="foot"><p class="src">Wiki：concepts/novel-view-synthesis.md ｜ 來源：NeRF、3DGS Survey</p><p class="pg"></p></div>
+<aside>先把問題講清楚：我們不是要「辨識」照片裡有什麼，而是要「重現」一個 3D 場景，讓它能從新角度被看見。注意輸入除了照片，還需要相機位姿——這就是下一頁的第 0 步。</aside>
+</section>

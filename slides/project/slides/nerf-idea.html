@@ -1,0 +1,13 @@
+<section id="nerf-idea">
+<p class="eyebrow">03 · NeRF（Mildenhall et al., ECCV 2020）</p>
+<h2 class="title">NeRF：把整個場景存成一個函數</h2>
+<p class="formula fade-in" style="--i:0; text-align:center; font-size:56px;"><span class="fx">F</span>( x, y, z, θ, φ ) → ( RGB, σ )</p>
+<div class="row" style="margin-top:40px;">
+<div class="card blue fade-in" style="--i:1"><p class="tag">輸入（5D）</p><p class="ct">位置＋視角</p><p class="cb">空間中的一點 (x, y, z)，以及從哪個方向 (θ, φ) 看它</p></div>
+<div class="card blue fade-in" style="--i:2"><p class="tag">輸出</p><p class="ct">顏色＋密度</p><p class="cb">這點是什麼顏色 RGB、有多「實」σ（光在這裡被擋住的程度）</p></div>
+<div class="card orange fade-in" style="--i:3"><p class="tag">關鍵設計</p><p class="ct">σ 只看位置</p><p class="cb">顏色才看視角 → 幾何在各角度一致，又能表現反光</p></div>
+</div>
+<p class="lead" style="margin-top:36px;">函數用一個 <b>8 層、256 通道的全連接網路（MLP，不是 CNN）</b>表示。比喻：<span class="hl">一團會回答問題的彩色霧</span>。</p>
+<div class="foot"><p class="src">Wiki：concepts/radiance-field.md、sources/nerf.md ｜ 來源：NeRF Sec. 3</p><p class="pg"></p></div>
+<aside>這個函數就叫做輻射場（radiance field）。你問它：這個點、從這個方向看，是什麼顏色？有多濃？它就回答。為什麼密度不能隨視角變？因為一個物體不會因為你換個角度看就變透明——這個限制讓多視角的幾何保持一致。</aside>
+</section>

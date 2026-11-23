@@ -1,0 +1,43 @@
+<section id="vr-intuition">
+<p class="eyebrow">03 · 體渲染（Volume Rendering）的直覺</p>
+<h2 class="title">一條光線，穿過一團彩色的霧</h2>
+<div class="col" style="width:700px; gap:18px;">
+<div class="card fade-in" style="--i:0; flex:none; padding:22px 36px;"><p class="cb"><b class="hl">①</b> 從相機穿過某個像素，射出一條光線</p></div>
+<div class="card fade-in" style="--i:1; flex:none; padding:22px 36px;"><p class="cb"><b class="hl">②</b> 沿路取樣，每個點問網路：顏色？密度？</p></div>
+<div class="card fade-in" style="--i:2; flex:none; padding:22px 36px;"><p class="cb"><b class="hl">③</b> 前面的霧越濃，後面就越看不到 → 加權累加成這個像素的顏色</p></div>
+<p class="callout fade-in" style="--i:3; font-size:28px;">整個過程<b>可微分</b>：渲染結果和真實照片的誤差，能一路反傳回場景，用梯度下降學出 3D。</p>
+</div>
+<x-embed style="position:absolute; left:880px; top:330px; width:900px; height:560px;"><!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0;background:transparent;overflow:hidden}</style></head><body><canvas id="c" width="900" height="560"></canvas><script>
+const c=document.getElementById('c'),g=c.getContext('2d');
+const F='26px "Microsoft JhengHei","PingFang TC","Noto Sans TC",sans-serif';
+const Y=190,X0=110,X1=860,STEP=30;
+const B=[{p:330,r:55,c:[70,140,220],d:1.2},{p:530,r:65,c:[230,120,50],d:2.4},{p:730,r:55,c:[80,190,130],d:3}];
+function sig(x){let s=0;for(const b of B)s+=b.d*Math.exp(-(((x-b.p)/b.r)**2));return s}
+function colAt(x){let w=0,r=0,q=0,u=0;for(const b of B){const k=Math.exp(-(((x-b.p)/b.r)**2));w+=k;r+=k*b.c[0];q+=k*b.c[1];u+=k*b.c[2]}return w>1e-6?[r/w,q/w,u/w]:[200,200,200]}
+const S=[];for(let x=X0+40;x<=X1;x+=STEP)S.push(x);
+const DUR=6000,HOLD=2000,t0=performance.now();
+function draw(now){
+const el=(now-t0)%(DUR+HOLD),pr=Math.min(el/DUR,1);g.clearRect(0,0,900,560);
+for(const b of B){const gr=g.createRadialGradient(b.p,Y,0,b.p,Y,b.r*1.8);gr.addColorStop(0,'rgba('+b.c+','+(0.12+0.1*b.d)+')');gr.addColorStop(1,'rgba('+b.c+',0)');g.fillStyle=gr;g.beginPath();g.ellipse(b.p,Y,b.r*1.8,b.r*1.6,0,0,7);g.fill()}
+g.fillStyle='#14213D';g.fillRect(20,Y-28,56,56);g.beginPath();g.moveTo(76,Y-16);g.lineTo(100,Y-30);g.lineTo(100,Y+30);g.lineTo(76,Y+16);g.fill();
+g.font=F;g.fillText('相機',22,Y+70);
+g.fillStyle='#4A5568';g.fillText('點越大 ＝ 對像素的貢獻越多（T × α）',120,48);
+const xr=X0+(X1-X0)*pr;
+g.lineWidth=4;g.setLineDash([8,8]);g.strokeStyle='#C9C2B3';g.beginPath();g.moveTo(xr,Y);g.lineTo(X1,Y);g.stroke();
+g.setLineDash([]);g.strokeStyle='#D9692A';g.beginPath();g.moveTo(X0,Y);g.lineTo(xr,Y);g.stroke();
+let T=1;const C=[0,0,0];
+for(const x of S){if(x>xr)break;const a=1-Math.exp(-sig(x)*STEP/100),cc=colAt(x),w=T*a;for(let i=0;i<3;i++)C[i]+=w*cc[i];
+g.fillStyle='rgb('+cc.map(Math.round)+')';g.beginPath();g.arc(x,Y,4+w*34,0,7);g.fill();g.strokeStyle='#14213D';g.lineWidth=1.5;g.stroke();T*=1-a}
+g.fillStyle='#D9692A';g.beginPath();g.arc(xr,Y,9,0,7);g.fill();
+g.fillStyle='#14213D';g.fillText('穿透率 T（還剩多少光沒被擋住）',40,360);
+g.fillStyle='#E3DED3';g.fillRect(40,380,560,36);g.fillStyle='#2F6DB5';g.fillRect(40,380,560*T,36);
+g.fillStyle='#14213D';g.fillText(T.toFixed(2),620,408);
+g.fillText('像素顏色（目前累積）',40,480);
+const bg=[247,245,240];g.fillStyle='rgb('+C.map((v,i)=>Math.round(v+T*bg[i]))+')';g.fillRect(320,446,140,64);g.strokeStyle='#14213D';g.lineWidth=2;g.strokeRect(320,446,140,64);
+if(pr>=1){g.fillStyle='#D9692A';g.fillText('綠色霧幾乎看不到：被前面擋住了',40,550)}
+requestAnimationFrame(draw)}
+requestAnimationFrame(draw);
+</script></body></html></x-embed>
+<div class="foot"><p class="src">Wiki：concepts/volume-rendering.md ｜ 來源：NeRF Sec. 4、Fig. 2</p><p class="pg"></p></div>
+<aside>右邊的動畫：橘色光線從相機出發，經過藍、橘、綠三團霧。每個取樣點的大小代表它對最終像素顏色的貢獻。注意藍色條（穿透率 T）在穿過橘色濃霧之後幾乎歸零，所以後面的綠色霧幾乎沒有貢獻——這就是「遮擋」。下一頁把這個直覺寫成公式。</aside>
+</section>

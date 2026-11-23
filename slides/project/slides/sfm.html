@@ -1,0 +1,20 @@
+<section id="sfm" data-transition="fade">
+<p class="eyebrow">02 · 第 0 步：Structure-from-Motion（COLMAP）</p>
+<h2 class="title">先知道每張照片是從哪裡拍的</h2>
+<div class="row" style="align-items:stretch; gap:20px;">
+<div class="card fade-in" style="--i:0"><p class="tag">STEP 1</p><p class="ct">特徵擷取</p><p class="cb">在每張圖找角點、紋理等特徵（如 SIFT）</p></div>
+<x-connector style="width:48px; color:#D9692A; border-width:4px;"></x-connector>
+<div class="card fade-in" style="--i:1"><p class="tag">STEP 2</p><p class="ct">配對＋驗證</p><p class="cb">找出哪些照片拍到同一處，用幾何檢查</p></div>
+<x-connector style="width:48px; color:#D9692A; border-width:4px;"></x-connector>
+<div class="card fade-in" style="--i:2"><p class="tag">STEP 3</p><p class="ct">註冊＋三角化</p><p class="cb">一張張加入模型，算出 3D 點</p></div>
+<x-connector style="width:48px; color:#D9692A; border-width:4px;"></x-connector>
+<div class="card fade-in" style="--i:3"><p class="tag">STEP 4</p><p class="ct">Bundle Adjustment</p><p class="cb">同時微調所有相機與 3D 點</p></div>
+</div>
+<div class="row" style="margin-top:48px; gap:24px; align-items:center;">
+<p class="pill">產出①　相機位姿 → NeRF、3DGS 都需要</p>
+<p class="pill" style="background:var(--accent-soft);">產出②　稀疏點雲 → 3DGS 拿來初始化</p>
+</div>
+<p class="lead" style="margin-top:32px;">比喻：從一疊照片<b>反推攝影師當時站在哪、鏡頭朝哪</b>。位姿算錯，後面全部壞掉。</p>
+<div class="foot"><p class="src">Wiki：concepts/sfm-camera-pose.md、sources/colmap-sfm.md ｜ 來源：Schönberger &amp; Frahm, CVPR 2016, Fig. 2</p><p class="pg"></p></div>
+<aside>很多人以為 NeRF 和 3DGS 只吃照片，其實它們都需要「已知相機位姿」。實務上幾乎都先跑 COLMAP。3DGS 更進一步，連 COLMAP 算出來的稀疏點雲都拿來當作高斯點的起點。</aside>
+</section>

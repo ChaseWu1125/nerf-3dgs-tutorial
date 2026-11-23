@@ -1,0 +1,22 @@
+<section id="splatting">
+<p class="eyebrow">05 · Splatting：為什麼 3DGS 這麼快</p>
+<h2 class="title">反過來做：把高斯「拍扁」投到畫面上</h2>
+<table class="data">
+<tr><th style="width:24%"></th><th style="width:38%">NeRF：Ray marching</th><th>3DGS：光柵化（Rasterization）</th></tr>
+<tr><td>方向</td><td>從每個像素射光線，去「找」場景</td><td>把每顆高斯「投」到畫面上</td></tr>
+<tr><td>每個像素的成本</td><td>沿光線查詢 MLP 上百次</td><td>只混合蓋到它的那些 splat</td></tr>
+<tr><td>GPU 友善度</td><td>低</td><td>高（和遊戲引擎同一套思路）</td></tr>
+</table>
+<div class="row" style="margin-top:40px; gap:16px; align-items:stretch;">
+<div class="card fade-in" style="--i:0; padding:28px;"><p class="tag">1</p><p class="cb">畫面切成 <b>16×16</b> 像素的 tiles</p></div>
+<x-connector style="width:40px; color:#D9692A; border-width:4px;"></x-connector>
+<div class="card fade-in" style="--i:1; padding:28px;"><p class="tag">2</p><p class="cb">視錐裁切：看不到的高斯直接丟掉</p></div>
+<x-connector style="width:40px; color:#D9692A; border-width:4px;"></x-connector>
+<div class="card fade-in" style="--i:2; padding:28px;"><p class="tag">3</p><p class="cb"><b>一次</b> GPU radix sort 依深度排序</p></div>
+<x-connector style="width:40px; color:#D9692A; border-width:4px;"></x-connector>
+<div class="card orange fade-in" style="--i:3; padding:28px;"><p class="tag">4</p><p class="cb">每個 tile 由前到後做 <b>α-blending</b></p></div>
+</div>
+<p class="lead" style="margin-top:32px; font-size:28px;">混合公式和 NeRF 相同，只是 αᵢ 來自投影後的 <b>2D 高斯</b>：Σ′ = J W Σ Wᵀ Jᵀ</p>
+<div class="foot"><p class="src">Wiki：concepts/splatting-rasterization.md ｜ 來源：3DGS Sec. 4、Sec. 6、Appendix</p><p class="pg"></p></div>
+<aside>這頁是 3DGS 速度的祕密。NeRF 是從像素出發去找場景；3DGS 是從場景元素出發，投影到畫面上，這就是傳統圖學的光柵化。排序只做一次、以 tile 為單位平行處理，非常適合 GPU。代價是排序以高斯為單位而不是每個像素，所以偶爾會有 popping 的瑕疵。</aside>
+</section>

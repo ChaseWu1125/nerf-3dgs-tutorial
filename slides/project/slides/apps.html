@@ -1,0 +1,31 @@
+<section id="apps">
+<p class="eyebrow">06 · 應用與限制</p>
+<h2 class="title">3DGS 能做什麼？還有哪些問題？</h2>
+<div class="row">
+<div class="card blue">
+<p class="tag">應用領域（Survey Sec. 5）</p>
+<ul style="font-size:28px; line-height:1.7; color:var(--dark); padding-left:36px;">
+<li>VR / AR、數位分身</li>
+<li>機器人：SLAM、導航</li>
+<li>動態場景（4D）</li>
+<li>數位人 Avatar</li>
+<li>內視鏡手術場景重建</li>
+<li>城市級大場景、自駕模擬</li>
+<li>生成與編輯、物理模擬</li>
+</ul>
+</div>
+<div class="card orange">
+<p class="tag">已知限制（3DGS Sec. 7.4）</p>
+<ul style="font-size:28px; line-height:1.7; color:var(--dark); padding-left:36px;">
+<li>沒拍到的區域會有瑕疵</li>
+<li>拉長或「斑塊狀」的高斯</li>
+<li>Popping：視角一動就閃跳</li>
+<li>記憶體大：訓練時 GPU 可能超過 20 GB</li>
+</ul>
+<p class="tag" style="margin-top:12px;">未來方向（Survey Sec. 7）</p>
+<p class="cb">前饋式直接預測高斯（不用逐場景訓練）、加入物理與語意、3D world model</p>
+</div>
+</div>
+<div class="foot"><p class="src">Wiki：sources/survey-3dgs.md、sources/3dgs.md ｜ 來源：Survey Sec. 5、7；3DGS Sec. 7.4</p><p class="pg"></p></div>
+<aside>3DGS 是顯式的，所以很容易編輯：可以直接移動、刪除、上色某些高斯，這是它在應用上爆發的原因之一。但也要誠實說明限制：沒拍到的地方它也猜不出來、記憶體很大、偶爾有 popping。</aside>
+</section>

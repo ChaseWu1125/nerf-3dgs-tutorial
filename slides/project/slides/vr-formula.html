@@ -1,0 +1,15 @@
+<section id="vr-formula">
+<p class="eyebrow">進階 · 這條公式是整個領域的核心</p>
+<h2 class="title">體渲染公式：把直覺寫成數學</h2>
+<p class="formula" style="font-size:40px; padding:24px 48px;"><span class="fx">Ĉ(r)</span> = Σᵢ  Tᵢ · ( 1 − e^(−σᵢ δᵢ) ) · cᵢ<br><span class="fx">Tᵢ</span>   = exp( − Σ(j &lt; i) σⱼ δⱼ )</p>
+<table class="data" style="margin-top:24px;">
+<tr><th style="width:26%">符號</th><th style="width:30%">意義</th><th>白話</th></tr>
+<tr><td>σᵢ</td><td>第 i 個取樣點的密度</td><td>這裡的霧有多濃</td></tr>
+<tr><td>δᵢ</td><td>到下一個取樣點的距離</td><td>這一小段有多長</td></tr>
+<tr><td>αᵢ = 1 − e^(−σᵢδᵢ)</td><td>這一段的不透明度</td><td>這段霧「擋下並發出」多少光（顏色 cᵢ）</td></tr>
+<tr><td>Tᵢ</td><td>累積穿透率</td><td>光走到這裡，還剩多少沒被前面擋掉</td></tr>
+</table>
+<p class="lead" style="margin-top:24px; font-size:28px;">代入 αᵢ 後就是 alpha compositing：<span class="mono">Ĉ = Σ cᵢ αᵢ Π(j&lt;i)(1 − αⱼ)</span> —— <span class="hl">3DGS 用的也是這個形式</span>。</p>
+<div class="foot"><p class="src">Wiki：concepts/volume-rendering.md ｜ 來源：NeRF Eq. 1、Eq. 3；Plenoxels Eq. 1；3DGS Sec. 4</p><p class="pg"></p></div>
+<aside>這是 NeRF 論文的 Eq. 3，Plenoxels 的 Eq. 1 也是同一條。重點不是背公式，而是看懂兩件事：第一，Tᵢ 讓前面的東西擋住後面的東西；第二，整條公式都是可微分的，所以能用梯度下降。後面我們會看到 3DGS 雖然不沿光線取樣，但混合顏色時用的仍是同一個 α-blending 形式。</aside>
+</section>

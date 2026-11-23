@@ -1,0 +1,4 @@
+# 論文 PDF 與抽出的全文屬於原作者版權，不放進公開 repo；下載方式見 raw/README.md
+raw/*.pdf
+raw/*.txt
+__pycache__/

@@ -1,0 +1,25 @@
+<section id="speedup">
+<p class="eyebrow">04 · 加速之路（2022）</p>
+<h2 class="title">兩條不同的路，都讓訓練快了上百倍</h2>
+<div class="row">
+<div class="card fade-in" style="--i:0">
+<p class="tag">PLENOXELS · CVPR 2022</p>
+<p class="ct">直接拿掉神經網路</p>
+<p class="cb">把場景存在<b>稀疏的 3D 格子（voxel）</b>裡：每格存一個不透明度＋27 個球諧函數係數（表示隨視角變的顏色），中間用三線性內插。</p>
+<div class="row" style="gap:24px; align-items:flex-end; margin-top:12px;">
+<p class="bignum" style="font-size:72px;">~11 分</p><p class="cb">訓練時間<br>（NeRF 約 1 天）</p>
+</div>
+</div>
+<div class="card blue fade-in" style="--i:1">
+<p class="tag">INSTANT-NGP · SIGGRAPH 2022</p>
+<p class="ct">保留一個很小的網路</p>
+<p class="cb">把「記憶」交給<b>多解析度 hash table</b> 裡可訓練的特徵向量，網路只要很小；再用 fully-fused CUDA 榨乾 GPU。</p>
+<div class="row" style="gap:24px; align-items:flex-end; margin-top:12px;">
+<p class="bignum" style="font-size:72px; color:var(--blue);">秒～分</p><p class="cb">訓練時間<br>1080p 渲染數十毫秒</p>
+</div>
+</div>
+</div>
+<p class="lead" style="margin-top:36px;">共同點：<b>都還是沿光線取樣的體渲染</b>。差別只在「場景存在哪裡」。</p>
+<div class="foot"><p class="src">Wiki：sources/plenoxels.md、sources/instant-ngp.md、concepts/hash-encoding.md ｜ 來源：Plenoxels Sec. 1、3.2；Instant-NGP Abstract</p><p class="pg"></p></div>
+<aside>Plenoxels 的 11 分鐘是在單張 Titan RTX、有界場景上的數字。Instant-NGP 的 hash table 會有碰撞，但作者不處理碰撞，讓多解析度結構和網路自己分辨。兩者都是 2022 年的工作，代表兩種哲學：完全顯式，或者顯式資料結構加小網路。</aside>
+</section>

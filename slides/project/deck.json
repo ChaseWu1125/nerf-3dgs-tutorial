@@ -1,0 +1,22 @@
+{
+  "v": 5,
+  "createdOnFiles": {"v": 1, "at": "2026-11-23T17:30:00+08:00"},
+  "lists": "css",
+  "format": {"v": 1, "shared": ["project/deck.css"]},
+  "title": "從照片到 3D 世界：NeRF 與 3DGS 入門",
+  "cover": "cover",
+  "order": ["cover", "roadmap", "problem", "sfm", "nerf-idea", "vr-intuition", "vr-formula", "nerf-tricks", "nerf-slow", "speedup", "statement", "gs-idea", "splatting", "density", "compare", "evolution", "apps", "quiz", "summary"],
+  "sections": {
+    "s1": {"description": "開場：新視角合成要解決什麼問題", "start": "cover"},
+    "s2": {"description": "第 0 步：用 SfM 求相機位姿", "start": "sfm"},
+    "s3": {"description": "NeRF：把場景存成函數，用體渲染畫出來", "start": "nerf-idea"},
+    "s4": {"description": "加速之路：Plenoxels 與 Instant-NGP", "start": "speedup"},
+    "s5": {"description": "3DGS：用 3D 高斯與光柵化做到即時", "start": "gs-idea"},
+    "s6": {"description": "比較、應用、小測驗與總結", "start": "compare"}
+  },
+  "faces": {
+    "noto-sans-tc": {"family": "Noto Sans TC", "href": "https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap"},
+    "jetbrains-mono": {"family": "JetBrains Mono", "href": "https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap"}
+  },
+  "designSystems": []
+}

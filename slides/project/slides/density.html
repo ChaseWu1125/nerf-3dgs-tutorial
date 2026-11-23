@@ -1,0 +1,17 @@
+<section id="density">
+<p class="eyebrow">05 · 訓練：自適應密度控制</p>
+<h2 class="title">哪裡不夠就加點，哪裡太粗就拆開</h2>
+<div class="row">
+<div class="card blue fade-in" style="--i:0"><p class="tag">細節不夠（under-reconstruction）</p><p class="ct">Clone 複製</p><p class="cb">小高斯蓋不住該有的幾何 → 複製一顆，往梯度方向移動</p></div>
+<div class="card orange fade-in" style="--i:1"><p class="tag">一顆蓋太大（over-reconstruction）</p><p class="ct">Split 分裂</p><p class="cb">大高斯糊掉細節 → 換成 2 顆，尺寸除以 1.6</p></div>
+<div class="card fade-in" style="--i:2"><p class="tag">幾乎透明</p><p class="ct">Prune 刪除</p><p class="cb">不透明度 α 低於門檻 → 直接移除，省記憶體</p></div>
+</div>
+<div class="row" style="margin-top:40px; gap:20px;">
+<p class="pill">每 100 次迭代檢查一次</p>
+<p class="pill">位置梯度 &gt; 0.0002 才動作</p>
+<p class="pill">每 3000 次把 α 重設，清掉漂浮雜點</p>
+</div>
+<p class="lead" style="margin-top:32px;">比喻：畫家先隨手點幾個色點，細節不夠就多點幾下、色塊太粗就拆成小點、沒用的擦掉。<br>損失函數：<span class="mono">L = 0.8·L1 + 0.2·D-SSIM</span></p>
+<div class="foot"><p class="src">Wiki：concepts/adaptive-density-control.md ｜ 來源：3DGS Sec. 5、Fig. 4</p><p class="pg"></p></div>
+<aside>SfM 點雲很稀疏，所以一開始的高斯遠遠不夠。3DGS 用位置梯度判斷哪裡「需要更多高斯」：梯度大代表這區域還重建得不好。小的就複製、大的就分裂。每 3000 次把不透明度重設到接近零，可以清掉相機附近的漂浮雜點（floaters）。</aside>
+</section>

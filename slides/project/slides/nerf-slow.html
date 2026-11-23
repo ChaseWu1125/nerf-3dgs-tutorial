@@ -1,0 +1,12 @@
+<section id="nerf-slow" class="dark" data-transition="fade">
+<p class="eyebrow">03 · NeRF 的問題</p>
+<h2 class="title">品質很好，但是……很慢</h2>
+<div class="row" style="gap:64px; margin-top:40px;">
+<div class="col fade-in" style="--i:0; flex:1;"><p class="bignum">1–2 天</p><p class="numlabel">訓練一個場景<br>（100–300k 次迭代，單張 V100）</p></div>
+<div class="col fade-in" style="--i:1; flex:1;"><p class="bignum">~30 秒</p><p class="numlabel">渲染<b>一張</b>圖<br>（V100）</p></div>
+<div class="col fade-in" style="--i:2; flex:1;"><p class="bignum">64+128</p><p class="numlabel">每條光線的取樣點<br>每一點都要跑一次 MLP</p></div>
+</div>
+<p class="callout fade-in" style="--i:3; margin-top:72px;">原因：一個像素 → 一條光線 → 上百次網路查詢。<br>接下來的研究，都在想辦法<b>讓這件事變快</b>。</p>
+<div class="foot"><p class="src">Wiki：sources/nerf.md ｜ 來源：NeRF Sec. 5.2、5.3、Appendix</p><p class="pg"></p></div>
+<aside>1080p 的畫面有兩百萬個像素，每個像素又要查網路上百次，這就是 NeRF 慢的根本原因。下一節看兩種不同的加速思路。</aside>
+</section>

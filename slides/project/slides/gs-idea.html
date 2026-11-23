@@ -1,0 +1,38 @@
+<section id="gs-idea">
+<p class="eyebrow">05 · 3D Gaussian Splatting（Kerbl et al., SIGGRAPH 2023）</p>
+<h2 class="title">幾百萬顆彩色、半透明的噴漆點</h2>
+<div class="col" style="width:780px; gap:14px;">
+<p class="lead" style="font-size:28px;">每一顆 3D 高斯是一個模糊的橢圓球，只有 4 種參數：</p>
+<div class="card fade-in" style="--i:0; flex:none; padding:18px 32px; gap:4px;"><p class="cb"><b class="hl">位置 μ</b>　它在哪裡</p></div>
+<div class="card fade-in" style="--i:1; flex:none; padding:18px 32px; gap:4px;"><p class="cb"><b class="hl">形狀 Σ = R S Sᵀ Rᵀ</b>　可以拉長、旋轉（不是圓球）</p></div>
+<div class="card fade-in" style="--i:2; flex:none; padding:18px 32px; gap:4px;"><p class="cb"><b class="hl">不透明度 α</b>　有多透明</p></div>
+<div class="card fade-in" style="--i:3; flex:none; padding:18px 32px; gap:4px;"><p class="cb"><b class="hl">顏色（球諧函數）</b>　換角度看，顏色會變</p></div>
+<p class="callout fade-in" style="--i:4; font-size:28px;"><b>沒有神經網路！</b>所有參數直接最佳化；起點是 SfM 的稀疏點雲。</p>
+</div>
+<x-embed style="position:absolute; left:960px; top:300px; width:820px; height:620px;"><!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0;background:transparent;overflow:hidden}</style></head><body><canvas id="c" width="820" height="620"></canvas><script>
+const c=document.getElementById('c'),g=c.getContext('2d');
+const F='26px "Microsoft JhengHei","PingFang TC","Noto Sans TC",sans-serif';
+let s=11;function R(){s=(s*1664525+1013904223)>>>0;return s/4294967296}
+const CX=410,CY=300,N=900,G=[];
+function region(x,y){
+for(let k=0;k<5;k++){const a=k*2*Math.PI/5-Math.PI/2,px=CX+100*Math.cos(a),py=CY+100*Math.sin(a),dx=x-px,dy=y-py,u=dx*Math.cos(-a)-dy*Math.sin(-a),v=dx*Math.sin(-a)+dy*Math.cos(-a);if((u/82)**2+(v/44)**2<1)return{c:[232,100+Math.round(R()*40),70],r:a}}
+if((x-CX)**2+(y-CY)**2<44*44)return{c:[243,200,80],r:R()*3.14};
+if(x>401&&x<419&&y>340&&y<600)return{c:[70,150,90],r:Math.PI/2};
+const lx=x-470,ly=y-480,lu=lx*Math.cos(0.5)-ly*Math.sin(0.5),lv=lx*Math.sin(0.5)+ly*Math.cos(0.5);if((lu/62)**2+(lv/22)**2<1)return{c:[90,175,105],r:-0.5};
+return null}
+while(G.length<N){const x=240+R()*340,y=140+R()*470,q=region(x,y);if(!q)continue;const i=G.length,b=40*Math.pow(1-i/N,2)+5;G.push({x,y,c:q.c,r:q.r+(R()-0.5)*0.4,sx:b*(1.5+R()),sy:b*(0.45+0.35*R())})}
+const DUR=7000,HOLD=2200,t0=performance.now();
+function draw(now){
+const el=(now-t0)%(DUR+HOLD),p=Math.min(el/DUR,1),n=Math.round(20+(N-20)*p*p);
+g.clearRect(0,0,820,620);
+for(let i=0;i<n;i++){const o=G[i];g.save();g.translate(o.x,o.y);g.rotate(o.r);g.scale(o.sx/10,o.sy/10);const gr=g.createRadialGradient(0,0,0,0,0,10);gr.addColorStop(0,'rgba('+o.c+',0.8)');gr.addColorStop(1,'rgba('+o.c+',0)');g.fillStyle=gr;g.beginPath();g.arc(0,0,10,0,7);g.fill();g.restore()}
+g.fillStyle='#14213D';g.font='bold '+F;g.fillText('高斯數量：'+n,20,40);
+g.font=F;g.fillStyle='#D9692A';
+g.fillText(p<0.25?'初始：少量又大又糊的高斯':(p<1?'Clone / Split：越來越多、越來越細':'完成：細節出現了'),20,80);
+g.fillStyle='#4A5568';g.fillText('（示意動畫，非真實訓練）',20,604);
+requestAnimationFrame(draw)}
+requestAnimationFrame(draw);
+</script></body></html></x-embed>
+<div class="foot"><p class="src">Wiki：concepts/3d-gaussian.md、sources/3dgs.md ｜ 來源：3DGS Sec. 4、5；Survey Abstract</p><p class="pg"></p></div>
+<aside>右邊是示意動畫：一開始只有少量又大又模糊的高斯，隨著訓練不斷複製、分裂，數量變多、尺寸變小，細節就出現了。共變異數寫成 R S Sᵀ Rᵀ（旋轉乘縮放），是為了保證梯度下降之後它仍然是合法的共變異數矩陣。可以拉長的高斯，能用很少的數量表示樹枝、電線這類細長結構。</aside>
+</section>
