@@ -91,26 +91,26 @@ ul.list{font-size:28px;line-height:1.75;padding-left:36px;color:var(--dark)}
 <ellipse cx="580" cy="200" rx="80" ry="30" fill="url(#g1)" transform="rotate(-35 580 200)"/>
 </svg>
 <div class="col" style="width:1000px;margin-top:130px">
-<p class="eyebrow fade-in">教學簡報 · 由 LLM Wiki 生成</p>
+<p class="eyebrow fade-in">研究主題介紹</p>
 <h1 class="fade-in" style="--i:1;font-size:120px;line-height:1.1">從照片到<br>3D 世界</h1>
 <p class="fade-in" style="--i:2;font-size:44px;font-weight:500;color:var(--muted-dark)">NeRF 與 3D Gaussian Splatting 入門</p>
-<p class="small fade-in" style="--i:3;margin-top:40px">知識來源：自建 LLM Wiki（ingest 6 篇論文：COLMAP、NeRF、Plenoxels、Instant-NGP、3DGS、3DGS Survey）</p>
-<p class="small fade-in" style="--i:4">操作：← → 或空白鍵翻頁；點右半邊下一頁、左半邊上一頁</p>
+<p class="small fade-in" style="--i:3;margin-top:40px">內容整理自 6 篇論文：COLMAP、NeRF、Plenoxels、Instant-NGP、3DGS、3DGS Survey</p>
+<p class="small fade-in" style="--i:4">用 ← → 或空白鍵翻頁，也可以點畫面左右兩側</p>
 </div>
 </section>
 
 <!-- 2 roadmap -->
 <section class="slide" data-wiki="index.md（閱讀主線）">
 <p class="eyebrow">今天的路線</p>
-<h2 class="title">五站，從一疊照片走到即時 3D</h2>
+<h2 class="title">今天會講的五個部分</h2>
 <div class="row">
-<div class="card fade-in"><p class="tag">01 問題</p><p class="ct">新視角合成</p><p class="cb">我們到底想做到什麼？</p></div>
+<div class="card fade-in"><p class="tag">01 問題</p><p class="ct">新視角合成</p><p class="cb">要解決的是什麼問題</p></div>
 <div class="card fade-in" style="--i:1"><p class="tag">02 第 0 步</p><p class="ct">相機位姿</p><p class="cb">先知道每張照片從哪裡拍</p></div>
-<div class="card blue fade-in" style="--i:2"><p class="tag">03 NeRF</p><p class="ct">彩色的霧</p><p class="cb">把場景存成一個函數</p></div>
+<div class="card blue fade-in" style="--i:2"><p class="tag">03 NeRF</p><p class="ct">用網路表示場景</p><p class="cb">第一個效果夠好的方法</p></div>
 <div class="card fade-in" style="--i:3"><p class="tag">04 加速</p><p class="ct">拿掉或縮小網路</p><p class="cb">Plenoxels、Instant-NGP</p></div>
-<div class="card orange fade-in" style="--i:4"><p class="tag">05 3DGS</p><p class="ct">噴漆點</p><p class="cb">幾百萬顆 3D 高斯，即時渲染</p></div>
+<div class="card orange fade-in" style="--i:4"><p class="tag">05 3DGS</p><p class="ct">用高斯表示場景</p><p class="cb">可以即時渲染</p></div>
 </div>
-<p class="lead" style="margin-top:56px">最後：數字比較 → 應用與限制 → 小測驗 → 重點回顧</p>
+<p class="lead" style="margin-top:56px">最後比較各方法的數字、介紹應用，再做個小測驗。</p>
 </section>
 
 <!-- 3 problem -->
@@ -119,9 +119,9 @@ ul.list{font-size:28px;line-height:1.75;padding-left:36px;color:var(--dark)}
 <h2 class="title">幾張照片，能從任何角度看嗎？</h2>
 <div class="row" style="align-items:center;gap:64px">
 <div class="col" style="width:820px">
-<p class="lead">手機繞著一盆花拍 50 張照片，之後能在螢幕上用<span class="hl">任何角度、任何路徑</span>飛過這盆花——包括你<b>沒有拍過</b>的角度。</p>
-<p class="callout">這個任務叫做<b>新視角合成（Novel View Synthesis）</b>：<br>輸入＝照片＋相機位姿；輸出＝新視角的照片。</p>
-<p class="small">應用：VR/AR、數位分身、機器人導航、文物保存、自駕模擬</p>
+<p class="lead">例如拿手機繞著一盆花拍 50 張照片，希望之後能從<span class="hl">任意角度</span>看這盆花，包括<b>沒有拍到</b>的角度。</p>
+<p class="callout">這個問題叫做<b>新視角合成（Novel View Synthesis）</b>。<br>輸入是照片和每張照片的相機位姿，輸出是新角度的畫面。</p>
+<p class="small">常見應用：VR/AR、數位分身、機器人導航、文物保存、自駕模擬</p>
 </div>
 <div style="position:relative;width:780px;height:620px">
 <svg width="780" height="620" viewBox="0 0 780 620" aria-label="花與周圍的相機">
@@ -134,8 +134,8 @@ ul.list{font-size:28px;line-height:1.75;padding-left:36px;color:var(--dark)}
 <rect x="514" y="120" width="56" height="40" rx="8" fill="#F7F5F0" stroke="#D9692A" stroke-width="5" stroke-dasharray="8 6"/>
 <line x1="542" y1="160" x2="430" y2="270" stroke="#D9692A" stroke-width="4" stroke-dasharray="8 6"/>
 </svg>
-<p class="small" style="position:absolute;left:480px;top:66px;color:var(--accent);font-weight:700">新視角（沒拍過）</p>
-<p class="small" style="position:absolute;left:30px;top:580px;color:var(--blue);font-weight:700">藍色＝已拍的照片</p>
+<p class="small" style="position:absolute;left:480px;top:66px;color:var(--accent);font-weight:700">新視角（沒拍到）</p>
+<p class="small" style="position:absolute;left:30px;top:580px;color:var(--blue);font-weight:700">藍色：已經拍的照片</p>
 </div>
 </div>
 </section>
@@ -143,46 +143,46 @@ ul.list{font-size:28px;line-height:1.75;padding-left:36px;color:var(--dark)}
 <!-- 4 sfm -->
 <section class="slide" data-wiki="concepts/sfm-camera-pose.md、sources/colmap-sfm.md ｜ 來源：Schönberger &amp; Frahm, CVPR 2016, Fig. 2">
 <p class="eyebrow">02 · 第 0 步：Structure-from-Motion（COLMAP）</p>
-<h2 class="title">先知道每張照片是從哪裡拍的</h2>
+<h2 class="title">第一步：算出每張照片是從哪裡拍的</h2>
 <div class="row" style="gap:18px">
-<div class="card fade-in"><p class="tag">STEP 1</p><p class="ct">特徵擷取</p><p class="cb">在每張圖找角點、紋理等特徵（如 SIFT）</p></div>
+<div class="card fade-in"><p class="tag">STEP 1</p><p class="ct">特徵擷取</p><p class="cb">在每張圖上找角點、紋理等特徵（例如 SIFT）</p></div>
 <span class="arrow">→</span>
-<div class="card fade-in" style="--i:1"><p class="tag">STEP 2</p><p class="ct">配對＋驗證</p><p class="cb">找出哪些照片拍到同一處，用幾何檢查</p></div>
+<div class="card fade-in" style="--i:1"><p class="tag">STEP 2</p><p class="ct">配對＋驗證</p><p class="cb">找出拍到同一個地方的照片，再用幾何關係排除錯配</p></div>
 <span class="arrow">→</span>
-<div class="card fade-in" style="--i:2"><p class="tag">STEP 3</p><p class="ct">註冊＋三角化</p><p class="cb">一張張加入模型，算出 3D 點</p></div>
+<div class="card fade-in" style="--i:2"><p class="tag">STEP 3</p><p class="ct">註冊＋三角化</p><p class="cb">照片逐張加進來，同時算出 3D 點</p></div>
 <span class="arrow">→</span>
-<div class="card fade-in" style="--i:3"><p class="tag">STEP 4</p><p class="ct">Bundle Adjustment</p><p class="cb">同時微調所有相機與 3D 點</p></div>
+<div class="card fade-in" style="--i:3"><p class="tag">STEP 4</p><p class="ct">Bundle Adjustment</p><p class="cb">最後一起微調所有相機和 3D 點</p></div>
 </div>
 <div class="row" style="margin-top:44px;gap:24px">
-<p class="pill">產出①　相機位姿 → NeRF、3DGS 都需要</p>
-<p class="pill" style="background:var(--accent-soft)">產出②　稀疏點雲 → 3DGS 拿來初始化</p>
+<p class="pill">輸出一：相機位姿，NeRF 和 3DGS 都要用</p>
+<p class="pill" style="background:var(--accent-soft)">輸出二：稀疏點雲，3DGS 拿來當初始值</p>
 </div>
-<p class="lead" style="margin-top:32px">比喻：從一疊照片<b>反推攝影師當時站在哪、鏡頭朝哪</b>。位姿算錯，後面全部壞掉。</p>
+<p class="lead" style="margin-top:32px">簡單說，就是從照片<b>反推相機當時的位置和朝向</b>。這一步算錯的話，後面的方法都做不好。</p>
 </section>
 
 <!-- 5 nerf idea -->
 <section class="slide" data-wiki="concepts/radiance-field.md、sources/nerf.md ｜ 來源：NeRF Sec. 3">
 <p class="eyebrow">03 · NeRF（Mildenhall et al., ECCV 2020）</p>
-<h2 class="title">NeRF：把整個場景存成一個函數</h2>
+<h2 class="title">NeRF：用一個網路記住整個場景</h2>
 <div class="formula fade-in" data-tex="F_\Theta(x,y,z,\theta,\phi)\;\longrightarrow\;(\mathbf{c}=RGB,\;\sigma)" style="font-size:56px"></div>
 <div class="row" style="margin-top:40px">
-<div class="card blue fade-in" style="--i:1"><p class="tag">輸入（5D）</p><p class="ct">位置＋視角</p><p class="cb">空間中的一點 (x, y, z)，以及從哪個方向 (θ, φ) 看它</p></div>
-<div class="card blue fade-in" style="--i:2"><p class="tag">輸出</p><p class="ct">顏色＋密度</p><p class="cb">這點是什麼顏色 RGB、有多「實」σ（光在這裡被擋住的程度）</p></div>
-<div class="card orange fade-in" style="--i:3"><p class="tag">關鍵設計</p><p class="ct">σ 只看位置</p><p class="cb">顏色才看視角 → 幾何在各角度一致，又能表現反光</p></div>
+<div class="card blue fade-in" style="--i:1"><p class="tag">輸入（5D）</p><p class="ct">位置＋視角</p><p class="cb">空間中的一點 (x, y, z)，和觀看的方向 (θ, φ)</p></div>
+<div class="card blue fade-in" style="--i:2"><p class="tag">輸出</p><p class="ct">顏色＋密度</p><p class="cb">這個點的顏色 RGB，和密度 σ（可以想成這裡有多不透明）</p></div>
+<div class="card orange fade-in" style="--i:3"><p class="tag">關鍵設計</p><p class="ct">密度只跟位置有關</p><p class="cb">只有顏色會隨視角改變，所以形狀在每個角度都一致，也能表現反光</p></div>
 </div>
-<p class="lead" style="margin-top:36px">函數用一個 <b>8 層、256 通道的全連接網路（MLP，不是 CNN）</b>表示。比喻：<span class="hl">一團會回答問題的彩色霧</span>。</p>
+<p class="lead" style="margin-top:36px">這個函數是一個 <b>8 層、每層 256 個神經元的 MLP</b>（全連接網路，不是 CNN）。可以把它想成<span class="hl">一團彩色的霧</span>，問它任何一點，它會回答那裡的顏色和濃度。</p>
 </section>
 
 <!-- 6 vr intuition -->
 <section class="slide" data-wiki="concepts/volume-rendering.md ｜ 來源：NeRF Sec. 4、Fig. 2">
 <p class="eyebrow">03 · 體渲染（Volume Rendering）的直覺</p>
-<h2 class="title">一條光線，穿過一團彩色的霧</h2>
+<h2 class="title">怎麼從這團霧算出一張照片</h2>
 <div class="row" style="gap:40px">
 <div class="col" style="width:700px;gap:18px">
-<div class="card fade-in" style="flex:none;padding:22px 32px"><p class="cb"><b class="hl">①</b> 從相機穿過某個像素，射出一條光線</p></div>
-<div class="card fade-in" style="--i:1;flex:none;padding:22px 32px"><p class="cb"><b class="hl">②</b> 沿路取樣，每個點問網路：顏色？密度？</p></div>
-<div class="card fade-in" style="--i:2;flex:none;padding:22px 32px"><p class="cb"><b class="hl">③</b> 前面的霧越濃，後面就越看不到 → 加權累加成這個像素的顏色</p></div>
-<p class="callout fade-in" style="--i:3;font-size:28px">整個過程<b>可微分</b>：渲染結果和真實照片的誤差，能一路反傳回場景，用梯度下降學出 3D。</p>
+<div class="card fade-in" style="flex:none;padding:22px 32px"><p class="cb"><b class="hl">1.</b> 從相機經過某個像素，射出一條光線</p></div>
+<div class="card fade-in" style="--i:1;flex:none;padding:22px 32px"><p class="cb"><b class="hl">2.</b> 在光線上取很多點，每個點都去問網路顏色和密度</p></div>
+<div class="card fade-in" style="--i:2;flex:none;padding:22px 32px"><p class="cb"><b class="hl">3.</b> 把這些點的顏色加起來；前面的霧越濃，後面的點佔的比重就越小</p></div>
+<p class="callout fade-in" style="--i:3;font-size:28px">這個過程<b>可以微分</b>，所以算出來的圖和真實照片的差距可以反向傳回去，用梯度下降慢慢學出場景。</p>
 </div>
 <canvas id="cvRay" width="920" height="580"></canvas>
 </div>
@@ -190,36 +190,36 @@ ul.list{font-size:28px;line-height:1.75;padding-left:36px;color:var(--dark)}
 
 <!-- 7 vr formula -->
 <section class="slide" data-wiki="concepts/volume-rendering.md ｜ 來源：NeRF Eq. 1、Eq. 3；Plenoxels Eq. 1；3DGS Sec. 4">
-<p class="eyebrow">進階 · 這條公式是整個領域的核心</p>
-<h2 class="title" style="margin-bottom:32px">體渲染公式：把直覺寫成數學</h2>
+<p class="eyebrow">進階 · 體渲染公式</p>
+<h2 class="title" style="margin-bottom:32px">把上一頁寫成公式</h2>
 <div class="formula" style="font-size:40px;padding:22px 48px" data-tex="\hat C(\mathbf r)=\sum_{i=1}^{N} T_i\,\bigl(1-e^{-\sigma_i\delta_i}\bigr)\,\mathbf c_i,\qquad T_i=\exp\Bigl(-\sum_{j=1}^{i-1}\sigma_j\delta_j\Bigr)"></div>
 <table style="margin-top:24px">
-<tr><th style="width:26%">符號</th><th style="width:30%">意義</th><th>白話</th></tr>
+<tr><th style="width:26%">符號</th><th style="width:30%">意義</th><th>直覺</th></tr>
 <tr><td data-tex="\sigma_i"></td><td>第 i 個取樣點的密度</td><td>這裡的霧有多濃</td></tr>
 <tr><td data-tex="\delta_i"></td><td>到下一個取樣點的距離</td><td>這一小段有多長</td></tr>
-<tr><td data-tex="\alpha_i = 1-e^{-\sigma_i\delta_i}"></td><td>這一段的不透明度</td><td>這段霧「擋下並發出」多少光（顏色 cᵢ）</td></tr>
+<tr><td data-tex="\alpha_i = 1-e^{-\sigma_i\delta_i}"></td><td>這一段的不透明度</td><td>這一段吸收、同時發出多少光（顏色 cᵢ）</td></tr>
 <tr><td data-tex="T_i"></td><td>累積穿透率</td><td>光走到這裡，還剩多少沒被前面擋掉</td></tr>
 </table>
-<p class="lead" style="margin-top:22px;font-size:28px">代入 αᵢ 就是 alpha compositing：<span data-tex="\hat C=\sum_i \mathbf c_i\,\alpha_i\prod_{j&lt;i}(1-\alpha_j)"></span> —— <span class="hl">3DGS 用的也是這個形式</span>。</p>
+<p class="lead" style="margin-top:22px;font-size:28px">把 αᵢ 代進去，就是電腦圖學常見的 alpha compositing：<span data-tex="\hat C=\sum_i \mathbf c_i\,\alpha_i\prod_{j&lt;i}(1-\alpha_j)"></span>。<span class="hl">後面的 3DGS 用的也是這條式子。</span></p>
 </section>
 
 <!-- 8 nerf tricks -->
 <section class="slide" data-wiki="concepts/positional-encoding.md、sources/nerf.md ｜ 來源：NeRF Sec. 5.1、5.2">
-<p class="eyebrow">03 · NeRF 的兩個關鍵技巧</p>
-<h2 class="title">讓網路畫得出細節，又不浪費力氣</h2>
+<p class="eyebrow">03 · NeRF</p>
+<h2 class="title">NeRF 的兩個重要技巧</h2>
 <div class="row">
 <div class="card blue fade-in">
 <p class="tag">技巧一</p><p class="ct">Positional Encoding</p>
-<p class="cb">直接輸入 (x, y, z)，網路只學得出<b>模糊</b>的畫面。改成把座標換成多種頻率的 sin / cos：</p>
+<p class="cb">如果直接把 (x, y, z) 丟進網路，畫面會很<b>糊</b>。NeRF 先把座標轉成不同頻率的 sin / cos：</p>
 <div class="formula" style="font-size:30px;padding:18px 24px" data-tex="\gamma(p)=\bigl(\sin 2^0\pi p,\cos 2^0\pi p,\dots,\sin 2^{L-1}\pi p,\cos 2^{L-1}\pi p\bigr)"></div>
-<p class="cb">位置用 <b>L = 10</b>、方向用 <b>L = 4</b>。比喻：給網路一把<span class="hl">有粗刻度也有細刻度的尺</span>。</p>
+<p class="cb">位置用 <b>L = 10</b>，方向用 <b>L = 4</b>。高頻的項讓網路比較容易學到<span class="hl">細節</span>。</p>
 </div>
 <div class="card orange fade-in" style="--i:1">
 <p class="tag">技巧二</p><p class="ct">階層式取樣</p>
-<p class="cb">空氣裡什麼都沒有，取樣在那裡是浪費。</p>
+<p class="cb">光線上大部分地方是空的，在那裡取樣很浪費。</p>
 <div class="row" style="gap:20px;margin-top:20px">
-<div class="col" style="gap:8px;flex:1"><p class="bignum" style="font-size:80px">64</p><p class="cb">Coarse：先粗看光線上哪裡有東西</p></div>
-<div class="col" style="gap:8px;flex:1"><p class="bignum" style="font-size:80px">+128</p><p class="cb">Fine：在有東西的地方加密取樣</p></div>
+<div class="col" style="gap:8px;flex:1"><p class="bignum" style="font-size:80px">64</p><p class="cb">Coarse：先粗略找出光線上哪裡有東西</p></div>
+<div class="col" style="gap:8px;flex:1"><p class="bignum" style="font-size:80px">+128</p><p class="cb">Fine：在有東西的地方多取一些點</p></div>
 </div>
 </div>
 </div>
@@ -228,56 +228,56 @@ ul.list{font-size:28px;line-height:1.75;padding-left:36px;color:var(--dark)}
 <!-- 9 nerf slow -->
 <section class="slide dark" data-wiki="sources/nerf.md ｜ 來源：NeRF Sec. 5.2、5.3、Appendix">
 <p class="eyebrow">03 · NeRF 的問題</p>
-<h2 class="title">品質很好，但是……很慢</h2>
+<h2 class="title">效果很好，但是很慢</h2>
 <div class="row" style="gap:64px;margin-top:40px">
 <div class="col fade-in" style="flex:1;gap:0"><p class="bignum">1–2 天</p><p class="numlabel">訓練一個場景<br>（100–300k 次迭代，單張 V100）</p></div>
 <div class="col fade-in" style="--i:1;flex:1;gap:0"><p class="bignum">~30 秒</p><p class="numlabel">渲染<b>一張</b>圖<br>（V100）</p></div>
 <div class="col fade-in" style="--i:2;flex:1;gap:0"><p class="bignum">64+128</p><p class="numlabel">每條光線的取樣點<br>每一點都要跑一次 MLP</p></div>
 </div>
-<p class="callout fade-in" style="--i:3;margin-top:72px">原因：一個像素 → 一條光線 → 上百次網路查詢。<br>接下來的研究，都在想辦法<b>讓這件事變快</b>。</p>
+<p class="callout fade-in" style="--i:3;margin-top:72px">因為每個像素都要射一條光線，每條光線又要查上百次網路。<br>之後很多研究都在想辦法<b>加速這一步</b>。</p>
 </section>
 
 <!-- 10 speedup -->
 <section class="slide" data-wiki="sources/plenoxels.md、sources/instant-ngp.md、concepts/hash-encoding.md ｜ 來源：Plenoxels Sec. 1、3.2；Instant-NGP Abstract">
 <p class="eyebrow">04 · 加速之路（2022）</p>
-<h2 class="title">兩條不同的路，都讓訓練快了上百倍</h2>
+<h2 class="title">2022 年的兩種加速方法</h2>
 <div class="row">
 <div class="card fade-in">
-<p class="tag">PLENOXELS · CVPR 2022</p><p class="ct">直接拿掉神經網路</p>
-<p class="cb">把場景存在<b>稀疏的 3D 格子（voxel）</b>裡：每格存一個不透明度＋27 個球諧函數係數（表示隨視角變的顏色），中間用三線性內插。</p>
+<p class="tag">PLENOXELS · CVPR 2022</p><p class="ct">不用神經網路</p>
+<p class="cb">改用<b>稀疏的 3D 格子（voxel）</b>存場景。每格存一個不透明度和 27 個球諧函數係數（用來表示隨視角變化的顏色），格子之間用三線性內插。</p>
 <div class="row" style="gap:24px;align-items:flex-end;margin-top:12px"><p class="bignum" style="font-size:72px">~11 分</p><p class="cb">訓練時間<br>（NeRF 約 1 天）</p></div>
 </div>
 <div class="card blue fade-in" style="--i:1">
-<p class="tag">INSTANT-NGP · SIGGRAPH 2022</p><p class="ct">保留一個很小的網路</p>
-<p class="cb">把「記憶」交給<b>多解析度 hash table</b> 裡可訓練的特徵向量，網路只要很小；再用 fully-fused CUDA 榨乾 GPU。</p>
+<p class="tag">INSTANT-NGP · SIGGRAPH 2022</p><p class="ct">網路變得很小</p>
+<p class="cb">大部分資訊改存在<b>多解析度 hash table</b> 的特徵向量裡，網路只需要很小，再搭配高度最佳化的 CUDA 實作（fully-fused MLP）。</p>
 <div class="row" style="gap:24px;align-items:flex-end;margin-top:12px"><p class="bignum" style="font-size:72px;color:var(--blue)">秒～分</p><p class="cb">訓練時間<br>1080p 渲染數十毫秒</p></div>
 </div>
 </div>
-<p class="lead" style="margin-top:36px">共同點：<b>都還是沿光線取樣的體渲染</b>。差別只在「場景存在哪裡」。</p>
+<p class="lead" style="margin-top:36px">這兩個方法其實<b>都還是沿著光線取樣做體渲染</b>，差別在於場景資料存在哪裡。</p>
 </section>
 
 <!-- 11 statement -->
 <section class="slide accent" data-wiki="sources/plenoxels.md、concepts/implicit-vs-explicit.md ｜ 來源：Plenoxels Sec. 1">
-<p class="eyebrow" style="color:#8A3B10">Plenoxels 帶來的關鍵洞見</p>
+<p class="eyebrow" style="color:#8A3B10">Plenoxels 論文的結論</p>
 <div class="col" style="margin-top:90px;gap:48px;width:1500px">
-<p class="fade-in" style="font-size:72px;font-weight:700;line-height:1.3">NeRF 成功的關鍵不是神經網路，<br>而是<span style="color:#8A3B10">可微分的體渲染</span>。</p>
+<p class="fade-in" style="font-size:72px;font-weight:700;line-height:1.3">NeRF 效果好，主要是因為<br><span style="color:#8A3B10">可微分的體渲染</span>，<br>神經網路本身不是必要的。</p>
 <p class="fade-in" style="--i:1;font-size:32px;line-height:1.5;color:#3A3A3A;font-style:italic">“Our experiments suggest the key element of Neural Radiance Fields is not the neural network but the differentiable volumetric renderer.”</p>
-<p class="fade-in" style="--i:2;font-size:32px;font-weight:700">→ 既然網路不是必要的，能不能換一種「更適合 GPU」的表示？這就是 3DGS。</p>
+<p class="fade-in" style="--i:2;font-size:32px;font-weight:700">那如果不用網路，改用更適合 GPU 的表示方式呢？3DGS 就是這樣做的。</p>
 </div>
 </section>
 
 <!-- 12 gs idea -->
 <section class="slide" data-wiki="concepts/3d-gaussian.md、sources/3dgs.md ｜ 來源：3DGS Sec. 4、5；Survey Abstract">
 <p class="eyebrow">05 · 3D Gaussian Splatting（Kerbl et al., SIGGRAPH 2023）</p>
-<h2 class="title">幾百萬顆彩色、半透明的噴漆點</h2>
+<h2 class="title">用大量的 3D 高斯來表示場景</h2>
 <div class="row" style="gap:60px">
 <div class="col" style="width:800px;gap:14px">
-<p class="lead" style="font-size:28px">每一顆 3D 高斯是一個模糊的橢圓球，只有 4 種參數：</p>
-<div class="card fade-in" style="flex:none;padding:18px 32px"><p class="cb"><b class="hl">位置 μ</b>　它在哪裡</p></div>
-<div class="card fade-in" style="--i:1;flex:none;padding:18px 32px"><p class="cb"><b class="hl">形狀 <span data-tex="\Sigma = R S S^\top R^\top"></span></b>　可以拉長、旋轉（不是圓球）</p></div>
+<p class="lead" style="font-size:28px">每個高斯可以想成一個邊緣模糊的橢球，參數有四種：</p>
+<div class="card fade-in" style="flex:none;padding:18px 32px"><p class="cb"><b class="hl">位置 μ</b>　中心在哪裡</p></div>
+<div class="card fade-in" style="--i:1;flex:none;padding:18px 32px"><p class="cb"><b class="hl">形狀 <span data-tex="\Sigma = R S S^\top R^\top"></span></b>　可以拉長、旋轉，不一定是圓的</p></div>
 <div class="card fade-in" style="--i:2;flex:none;padding:18px 32px"><p class="cb"><b class="hl">不透明度 α</b>　有多透明</p></div>
-<div class="card fade-in" style="--i:3;flex:none;padding:18px 32px"><p class="cb"><b class="hl">顏色（球諧函數）</b>　換角度看，顏色會變</p></div>
-<p class="callout fade-in" style="--i:4;font-size:28px"><b>沒有神經網路！</b>所有參數直接最佳化；起點是 SfM 的稀疏點雲。</p>
+<div class="card fade-in" style="--i:3;flex:none;padding:18px 32px"><p class="cb"><b class="hl">顏色（球諧函數）</b>　從不同角度看，顏色可以不同</p></div>
+<p class="callout fade-in" style="--i:4;font-size:28px">這裡<b>沒有神經網路</b>，參數直接最佳化，初始值是 SfM 點雲。</p>
 </div>
 <canvas id="cvGS" width="800" height="620"></canvas>
 </div>
@@ -285,42 +285,42 @@ ul.list{font-size:28px;line-height:1.75;padding-left:36px;color:var(--dark)}
 
 <!-- 13 splatting -->
 <section class="slide" data-wiki="concepts/splatting-rasterization.md ｜ 來源：3DGS Sec. 4、Sec. 6、Appendix">
-<p class="eyebrow">05 · Splatting：為什麼 3DGS 這麼快</p>
-<h2 class="title">反過來做：把高斯「拍扁」投到畫面上</h2>
+<p class="eyebrow">05 · Splatting</p>
+<h2 class="title">3DGS 為什麼快：把高斯投影到畫面上</h2>
 <table>
 <tr><th style="width:24%"></th><th style="width:38%">NeRF：Ray marching</th><th>3DGS：光柵化（Rasterization）</th></tr>
-<tr><td>方向</td><td>從每個像素射光線，去「找」場景</td><td>把每顆高斯「投」到畫面上</td></tr>
-<tr><td>每個像素的成本</td><td>沿光線查詢 MLP 上百次</td><td>只混合蓋到它的那些 splat</td></tr>
-<tr><td>GPU 友善度</td><td>低</td><td>高（和遊戲引擎同一套思路）</td></tr>
+<tr><td>做法</td><td>每個像素射一條光線，沿路查詢場景</td><td>把每個高斯投影到畫面上</td></tr>
+<tr><td>每個像素的成本</td><td>要查詢 MLP 上百次</td><td>只要混合覆蓋到它的高斯</td></tr>
+<tr><td>適不適合 GPU</td><td>不太適合</td><td>很適合，和遊戲引擎的做法類似</td></tr>
 </table>
 <div class="row" style="margin-top:36px;gap:14px">
-<div class="card fade-in" style="padding:26px"><p class="tag">1</p><p class="cb">畫面切成 <b>16×16</b> 像素的 tiles</p></div><span class="arrow">→</span>
-<div class="card fade-in" style="--i:1;padding:26px"><p class="tag">2</p><p class="cb">視錐裁切：看不到的高斯直接丟掉</p></div><span class="arrow">→</span>
-<div class="card fade-in" style="--i:2;padding:26px"><p class="tag">3</p><p class="cb"><b>一次</b> GPU radix sort 依深度排序</p></div><span class="arrow">→</span>
-<div class="card orange fade-in" style="--i:3;padding:26px"><p class="tag">4</p><p class="cb">每個 tile 由前到後做 <b>α-blending</b></p></div>
+<div class="card fade-in" style="padding:26px"><p class="tag">1</p><p class="cb">把畫面切成 <b>16×16</b> 像素的 tile</p></div><span class="arrow">→</span>
+<div class="card fade-in" style="--i:1;padding:26px"><p class="tag">2</p><p class="cb">先丟掉視野外的高斯</p></div><span class="arrow">→</span>
+<div class="card fade-in" style="--i:2;padding:26px"><p class="tag">3</p><p class="cb">用 GPU radix sort 依深度排序，整張圖只排<b>一次</b></p></div><span class="arrow">→</span>
+<div class="card orange fade-in" style="--i:3;padding:26px"><p class="tag">4</p><p class="cb">每個 tile 從前到後做 <b>α-blending</b></p></div>
 </div>
-<p class="lead" style="margin-top:28px;font-size:28px">混合公式和 NeRF 相同，只是 αᵢ 來自投影後的 <b>2D 高斯</b>：<span data-tex="\Sigma' = J W \Sigma W^\top J^\top"></span></p>
+<p class="lead" style="margin-top:28px;font-size:28px">混合的公式和 NeRF 一樣，只是 αᵢ 改由投影後的 <b>2D 高斯</b>算出：<span data-tex="\Sigma' = J W \Sigma W^\top J^\top"></span></p>
 </section>
 
 <!-- 14 density -->
 <section class="slide" data-wiki="concepts/adaptive-density-control.md ｜ 來源：3DGS Sec. 5、Fig. 4">
-<p class="eyebrow">05 · 訓練：自適應密度控制</p>
-<h2 class="title">哪裡不夠就加點，哪裡太粗就拆開</h2>
+<p class="eyebrow">05 · 自適應密度控制</p>
+<h2 class="title">訓練時，高斯的數量會自己調整</h2>
 <div class="row">
-<div class="card blue fade-in"><p class="tag">細節不夠（under-reconstruction）</p><p class="ct">Clone 複製</p><p class="cb">小高斯蓋不住該有的幾何 → 複製一顆，往梯度方向移動</p></div>
-<div class="card orange fade-in" style="--i:1"><p class="tag">一顆蓋太大（over-reconstruction）</p><p class="ct">Split 分裂</p><p class="cb">大高斯糊掉細節 → 換成 2 顆，尺寸除以 1.6</p></div>
-<div class="card fade-in" style="--i:2"><p class="tag">幾乎透明</p><p class="ct">Prune 刪除</p><p class="cb">不透明度 α 低於門檻 → 直接移除，省記憶體</p></div>
+<div class="card blue fade-in"><p class="tag">細節不夠（under-reconstruction）</p><p class="ct">Clone 複製</p><p class="cb">小高斯蓋不住該有的形狀，就複製一份，沿梯度方向移動</p></div>
+<div class="card orange fade-in" style="--i:1"><p class="tag">一顆蓋太大（over-reconstruction）</p><p class="ct">Split 分裂</p><p class="cb">大高斯把細節糊掉，就拆成 2 個，尺寸除以 1.6</p></div>
+<div class="card fade-in" style="--i:2"><p class="tag">幾乎透明</p><p class="ct">Prune 刪除</p><p class="cb">不透明度 α 低於門檻就刪掉，節省記憶體</p></div>
 </div>
 <div class="row" style="margin-top:40px;gap:20px">
-<p class="pill">每 100 次迭代檢查一次</p><p class="pill">位置梯度 &gt; 0.0002 才動作</p><p class="pill">每 3000 次把 α 重設，清掉漂浮雜點</p>
+<p class="pill">每 100 次迭代檢查一次</p><p class="pill">位置梯度超過 0.0002 才處理</p><p class="pill">每 3000 次重設 α，清掉漂浮的雜點</p>
 </div>
-<p class="lead" style="margin-top:30px">比喻：畫家先隨手點幾個色點，細節不夠就多點幾下、色塊太粗就拆成小點、沒用的擦掉。<br>損失函數：<span data-tex="\mathcal L = 0.8\,\mathcal L_1 + 0.2\,\mathcal L_{\text{D-SSIM}}"></span></p>
+<p class="lead" style="margin-top:30px">有點像畫點描畫：先點幾個色點，細節不夠的地方多補幾筆，太粗的色塊拆小，多餘的擦掉。<br>損失函數：<span data-tex="\mathcal L = 0.8\,\mathcal L_1 + 0.2\,\mathcal L_{\text{D-SSIM}}"></span></p>
 </section>
 
 <!-- 15 compare -->
 <section class="slide" data-wiki="comparisons/nerf-vs-3dgs.md ｜ 來源：3DGS Table 1">
 <p class="eyebrow">06 · 數字比較（Mip-NeRF360 資料集）</p>
-<h2 class="title">速度快了上千倍，代價是記憶體</h2>
+<h2 class="title">速度快很多，但記憶體用量也大很多</h2>
 <table style="font-size:32px">
 <tr><th style="width:30%">方法</th><th style="width:16%">訓練</th><th style="width:18%">FPS</th><th style="width:16%">記憶體</th><th>PSNR ↑</th></tr>
 <tr><td>Mip-NeRF360*</td><td>48 h</td><td>0.06</td><td>8.6 MB</td><td>27.69（最佳）</td></tr>
@@ -331,25 +331,25 @@ ul.list{font-size:28px;line-height:1.75;padding-left:36px;color:var(--dark)}
 </table>
 <div class="row" style="margin-top:36px">
 <p class="callout" style="flex:1"><b>FPS</b>：0.06 → 134～160<br><b>記憶體</b>：8.6 MB → 523～734 MB</p>
-<p class="small" style="flex:1">* Mip-NeRF360 不在本 Wiki 的 6 篇資料中，作為「當時品質最好的 NeRF」基準；全表數字皆引自 3DGS 論文 Table 1，並已逐列對照原文。原版 NeRF 因資料集與 GPU 不同，不放進同一張表。</p>
+<p class="small" style="flex:1">* Mip-NeRF360 不在這 6 篇論文裡，放進來是因為它是當時品質最好的 NeRF 方法。整張表引自 3DGS 論文 Table 1。原版 NeRF 的測試資料和 GPU 不同，所以沒有放在同一張表。</p>
 </div>
 </section>
 
 <!-- 16 evolution -->
 <section class="slide dark" data-wiki="concepts/implicit-vs-explicit.md ｜ 來源：NeRF、Plenoxels、Instant-NGP、3DGS、Survey">
-<p class="eyebrow">06 · 統整</p>
-<h2 class="title">隱式 vs 顯式：一條演進的故事線</h2>
+<p class="eyebrow">06 · 整理</p>
+<h2 class="title">從隱式表示到顯式表示</h2>
 <div class="row" style="gap:20px">
-<div class="card fade-in" style="padding:26px"><p class="tag">2016</p><p class="ct" style="font-size:36px">COLMAP</p><p class="cb">求相機位姿＋稀疏點</p></div>
-<div class="card fade-in" style="--i:1;padding:26px"><p class="tag">2020</p><p class="ct" style="font-size:36px">NeRF</p><p class="cb">隱式：場景在 MLP 權重裡</p></div>
-<div class="card fade-in" style="--i:2;padding:26px"><p class="tag">2022</p><p class="ct" style="font-size:36px">Plenoxels / NGP</p><p class="cb">顯式格子 / 混合：hash 表＋小網路</p></div>
-<div class="card fade-in" style="--i:3;padding:26px;background:#5A3A2A"><p class="tag" style="color:#F6DCC8">2023</p><p class="ct" style="font-size:36px">3DGS</p><p class="cb">顯式高斯＋光柵化 → 即時</p></div>
-<div class="card fade-in" style="--i:4;padding:26px"><p class="tag">2024–</p><p class="ct" style="font-size:36px">應用爆發</p><p class="cb">可編輯性帶來新應用</p></div>
+<div class="card fade-in" style="padding:26px"><p class="tag">2016</p><p class="ct" style="font-size:36px">COLMAP</p><p class="cb">算相機位姿和稀疏點</p></div>
+<div class="card fade-in" style="--i:1;padding:26px"><p class="tag">2020</p><p class="ct" style="font-size:36px">NeRF</p><p class="cb">隱式：場景存在 MLP 權重裡</p></div>
+<div class="card fade-in" style="--i:2;padding:26px"><p class="tag">2022</p><p class="ct" style="font-size:36px">Plenoxels / NGP</p><p class="cb">顯式格子，或 hash 表加小網路</p></div>
+<div class="card fade-in" style="--i:3;padding:26px;background:#5A3A2A"><p class="tag" style="color:#F6DCC8">2023</p><p class="ct" style="font-size:36px">3DGS</p><p class="cb">顯式高斯加光柵化，可以即時</p></div>
+<div class="card fade-in" style="--i:4;padding:26px"><p class="tag">2024–</p><p class="ct" style="font-size:36px">後續發展</p><p class="cb">容易編輯，應用變多</p></div>
 </div>
 <table style="margin-top:44px">
 <tr><th style="width:22%"></th><th style="width:39%">隱式（NeRF）</th><th>顯式（3DGS）</th></tr>
-<tr><td>場景存在哪</td><td>神經網路權重</td><td>看得見、摸得到的高斯點</td></tr>
-<tr><td>優點</td><td>儲存小、連續</td><td>快、可直接移動或刪除元素（可編輯）</td></tr>
+<tr><td>場景存在哪裡</td><td>神經網路權重</td><td>一個個高斯點</td></tr>
+<tr><td>優點</td><td>儲存小、連續</td><td>快，可以直接移動或刪除高斯</td></tr>
 <tr><td>缺點</td><td>慢、難編輯</td><td>記憶體大</td></tr>
 </table>
 </section>
@@ -357,43 +357,43 @@ ul.list{font-size:28px;line-height:1.75;padding-left:36px;color:var(--dark)}
 <!-- 17 apps -->
 <section class="slide" data-wiki="sources/survey-3dgs.md、sources/3dgs.md ｜ 來源：Survey Sec. 5、7；3DGS Sec. 7.4">
 <p class="eyebrow">06 · 應用與限制</p>
-<h2 class="title">3DGS 能做什麼？還有哪些問題？</h2>
+<h2 class="title">3DGS 的應用和目前的限制</h2>
 <div class="row">
 <div class="card blue"><p class="tag">應用領域（Survey Sec. 5）</p>
 <ul class="list"><li>VR / AR、數位分身</li><li>機器人：SLAM、導航</li><li>動態場景（4D）</li><li>數位人 Avatar</li><li>內視鏡手術場景重建</li><li>城市級大場景、自駕模擬</li><li>生成與編輯、物理模擬</li></ul></div>
 <div class="card orange"><p class="tag">已知限制（3DGS Sec. 7.4）</p>
-<ul class="list"><li>沒拍到的區域會有瑕疵</li><li>拉長或「斑塊狀」的高斯</li><li>Popping：視角一動就閃跳</li><li>記憶體大：訓練時 GPU 可能超過 20 GB</li></ul>
+<ul class="list"><li>沒拍到的區域會有瑕疵</li><li>有時會出現拉長或一塊一塊的高斯</li><li>Popping：視角移動時畫面突然跳動</li><li>訓練時 GPU 記憶體可能超過 20 GB</li></ul>
 <p class="tag" style="margin-top:12px">未來方向（Survey Sec. 7）</p>
-<p class="cb">前饋式直接預測高斯（不用逐場景訓練）、加入物理與語意、3D world model</p></div>
+<p class="cb">直接用網路預測高斯，不必每個場景重新訓練；加入物理和語意資訊；3D world model</p></div>
 </div>
 </section>
 
 <!-- 18 quiz -->
 <section class="slide" data-wiki="misconceptions.md（M1、M4、M3、M5、M7）">
-<p class="eyebrow">小測驗 · 是對還是錯？（按 → 逐題揭曉）</p>
-<h2 class="title">檢查一下你有沒有聽懂</h2>
+<p class="eyebrow">判斷對錯（按 → 看答案）</p>
+<h2 class="title">小測驗</h2>
 <div class="col" style="gap:22px">
-<div class="row" style="align-items:center"><p class="lead" style="width:820px;color:var(--dark)">1. 3DGS 用神經網路來表示場景</p><p class="frag pill" style="background:var(--accent-soft)">✗ 錯：完全沒有神經網路</p></div>
-<div class="row" style="align-items:center"><p class="lead" style="width:820px;color:var(--dark)">2. NeRF 的密度 σ 會隨觀看角度改變</p><p class="frag pill" style="background:var(--accent-soft)">✗ 錯：σ 只看位置，顏色才看視角</p></div>
-<div class="row" style="align-items:center"><p class="lead" style="width:820px;color:var(--dark)">3. 3DGS 從隨機的點開始訓練</p><p class="frag pill" style="background:var(--accent-soft)">✗ 錯：從 SfM 稀疏點雲開始</p></div>
-<div class="row" style="align-items:center"><p class="lead" style="width:820px;color:var(--dark)">4. NeRF 和 3DGS 都需要相機位姿</p><p class="frag pill">✓ 對：通常先用 COLMAP 算出來</p></div>
-<div class="row" style="align-items:center"><p class="lead" style="width:820px;color:var(--dark)">5. 3DGS 在每一方面都贏過 NeRF</p><p class="frag pill" style="background:var(--accent-soft)">✗ 錯：記憶體大得多，PSNR 也未必最高</p></div>
+<div class="row" style="align-items:center"><p class="lead" style="width:820px;color:var(--dark)">1. 3DGS 用神經網路來表示場景</p><p class="frag pill" style="background:var(--accent-soft)">✗ 錯，3DGS 沒有用神經網路</p></div>
+<div class="row" style="align-items:center"><p class="lead" style="width:820px;color:var(--dark)">2. NeRF 的密度 σ 會隨觀看角度改變</p><p class="frag pill" style="background:var(--accent-soft)">✗ 錯，σ 只跟位置有關</p></div>
+<div class="row" style="align-items:center"><p class="lead" style="width:820px;color:var(--dark)">3. 3DGS 從隨機的點開始訓練</p><p class="frag pill" style="background:var(--accent-soft)">✗ 錯，是從 SfM 的稀疏點雲開始</p></div>
+<div class="row" style="align-items:center"><p class="lead" style="width:820px;color:var(--dark)">4. NeRF 和 3DGS 都需要相機位姿</p><p class="frag pill">✓ 對，通常先用 COLMAP 算</p></div>
+<div class="row" style="align-items:center"><p class="lead" style="width:820px;color:var(--dark)">5. 3DGS 在每一方面都贏過 NeRF</p><p class="frag pill" style="background:var(--accent-soft)">✗ 錯，記憶體用得多，PSNR 也不一定最高</p></div>
 </div>
 </section>
 
 <!-- 19 summary -->
-<section class="slide dark" data-wiki="index.md ｜ 本簡報每頁內容皆可追溯到 Wiki 頁面與原始論文">
-<p class="eyebrow">重點回顧</p>
-<h2 class="title">帶走這四句話</h2>
+<section class="slide dark" data-wiki="index.md">
+<p class="eyebrow">總結</p>
+<h2 class="title">重點整理</h2>
 <div class="row" style="gap:64px">
 <div class="col" style="flex:1.3;gap:28px">
-<p class="lead fade-in"><b class="hl">1</b>　新視角合成＝照片＋相機位姿 → 任意角度的新照片；位姿由 SfM（COLMAP）算出。</p>
-<p class="lead fade-in" style="--i:1"><b class="hl">2</b>　NeRF 把場景存成函數 F(x, d) → (RGB, σ)，用<b>可微分體渲染</b>學出來，但很慢。</p>
-<p class="lead fade-in" style="--i:2"><b class="hl">3</b>　Plenoxels 證明：關鍵是渲染公式，不是神經網路。</p>
-<p class="lead fade-in" style="--i:3"><b class="hl">4</b>　3DGS 用顯式 3D 高斯＋光柵化，做到 1080p 即時；代價是記憶體。</p>
+<p class="lead fade-in"><b class="hl">1</b>　新視角合成：給定照片和相機位姿，產生新角度的畫面。相機位姿通常用 COLMAP 算。</p>
+<p class="lead fade-in" style="--i:1"><b class="hl">2</b>　NeRF 用 MLP 表示場景 F(x, d) → (RGB, σ)，靠<b>可微分的體渲染</b>訓練，效果好但很慢。</p>
+<p class="lead fade-in" style="--i:2"><b class="hl">3</b>　Plenoxels 顯示神經網路不是必要的，重點在體渲染。</p>
+<p class="lead fade-in" style="--i:3"><b class="hl">4</b>　3DGS 改用顯式的 3D 高斯加光柵化，1080p 可以即時渲染，但記憶體用量大。</p>
 </div>
 <div class="col" style="flex:1;gap:12px">
-<p class="tag">參考資料（Wiki 的 6 個 sources）</p>
+<p class="tag">參考資料</p>
 <p class="small">Schönberger &amp; Frahm. Structure-from-Motion Revisited. CVPR 2016.</p>
 <p class="small">Mildenhall et al. NeRF. ECCV 2020.</p>
 <p class="small">Fridovich-Keil, Yu et al. Plenoxels. CVPR 2022.</p>
@@ -450,17 +450,17 @@ function draw(now){requestAnimationFrame(draw);if(!isOn('cvRay')){t0=now;return}
 const el=(now-t0)%(DUR+HOLD),pr=Math.min(el/DUR,1);g.clearRect(0,0,c.width,c.height);
 for(const b of B){const gr=g.createRadialGradient(b.p,Y,0,b.p,Y,b.r*1.8);gr.addColorStop(0,'rgba('+b.c+','+(0.12+0.1*b.d)+')');gr.addColorStop(1,'rgba('+b.c+',0)');g.fillStyle=gr;g.beginPath();g.ellipse(b.p,Y,b.r*1.8,b.r*1.6,0,0,7);g.fill()}
 g.fillStyle='#14213D';g.fillRect(20,Y-28,56,56);g.beginPath();g.moveTo(76,Y-16);g.lineTo(100,Y-30);g.lineTo(100,Y+30);g.lineTo(76,Y+16);g.fill();
-g.font=F;g.fillText('相機',22,Y+70);g.fillStyle='#4A5568';g.fillText('點越大 ＝ 對像素的貢獻越多（T × α）',130,50);
+g.font=F;g.fillText('相機',22,Y+70);g.fillStyle='#4A5568';g.fillText('圓點越大，對這個像素的影響越大（T × α）',130,50);
 const xr=X0+(X1-X0)*pr;g.lineWidth=4;g.setLineDash([8,8]);g.strokeStyle='#C9C2B3';g.beginPath();g.moveTo(xr,Y);g.lineTo(X1,Y);g.stroke();
 g.setLineDash([]);g.strokeStyle='#D9692A';g.beginPath();g.moveTo(X0,Y);g.lineTo(xr,Y);g.stroke();
 let T=1;const C=[0,0,0];
 for(const x of S){if(x>xr)break;const a=1-Math.exp(-sig(x)*STEP/100),cc=colAt(x),w=T*a;for(let i=0;i<3;i++)C[i]+=w*cc[i];
 g.fillStyle='rgb('+cc.map(Math.round)+')';g.beginPath();g.arc(x,Y,4+w*34,0,7);g.fill();g.strokeStyle='#14213D';g.lineWidth=1.5;g.stroke();T*=1-a}
 g.fillStyle='#D9692A';g.beginPath();g.arc(xr,Y,9,0,7);g.fill();
-g.fillStyle='#14213D';g.fillText('穿透率 T（還剩多少光沒被擋住）',40,370);
+g.fillStyle='#14213D';g.fillText('穿透率 T：還有多少光沒被擋住',40,370);
 g.fillStyle='#E3DED3';g.fillRect(40,390,580,36);g.fillStyle='#2F6DB5';g.fillRect(40,390,580*T,36);g.fillStyle='#14213D';g.fillText(T.toFixed(2),640,418);
-g.fillText('像素顏色（目前累積）',40,490);const bg=[247,245,240];g.fillStyle='rgb('+C.map((v,i)=>Math.round(v+T*bg[i]))+')';g.fillRect(320,456,140,64);g.strokeStyle='#14213D';g.lineWidth=2;g.strokeRect(320,456,140,64);
-if(pr>=1){g.fillStyle='#D9692A';g.fillText('綠色霧幾乎看不到：被前面的霧擋住了',40,565)}}
+g.fillText('目前累積的像素顏色',40,490);const bg=[247,245,240];g.fillStyle='rgb('+C.map((v,i)=>Math.round(v+T*bg[i]))+')';g.fillRect(320,456,140,64);g.strokeStyle='#14213D';g.lineWidth=2;g.strokeRect(320,456,140,64);
+if(pr>=1){g.fillStyle='#D9692A';g.fillText('綠色的霧被前面擋住，幾乎沒有貢獻',40,565)}}
 requestAnimationFrame(draw)})();
 
 // ---- Demo 2: gaussians densifying ----
@@ -477,7 +477,7 @@ function draw(now){requestAnimationFrame(draw);if(!isOn('cvGS')){t0=now;return}
 const el=(now-t0)%(DUR+HOLD),p=Math.min(el/DUR,1),n=Math.round(20+(N-20)*p*p);g.clearRect(0,0,c.width,c.height);
 for(let i=0;i<n;i++){const o=G[i];g.save();g.translate(o.x,o.y);g.rotate(o.r);g.scale(o.sx/10,o.sy/10);const gr=g.createRadialGradient(0,0,0,0,0,10);gr.addColorStop(0,'rgba('+o.c+',0.8)');gr.addColorStop(1,'rgba('+o.c+',0)');g.fillStyle=gr;g.beginPath();g.arc(0,0,10,0,7);g.fill();g.restore()}
 g.fillStyle='#14213D';g.font='bold '+F;g.fillText('高斯數量：'+n,20,40);g.font=F;g.fillStyle='#D9692A';
-g.fillText(p<.25?'初始：少量又大又糊的高斯':(p<1?'Clone / Split：越來越多、越來越細':'完成：細節出現了'),20,80);
+g.fillText(p<.25?'一開始：少量、大而模糊的高斯':(p<1?'Clone / Split：數量變多、尺寸變小':'細節變清楚了'),20,80);
 g.fillStyle='#4A5568';g.fillText('（示意動畫，非真實訓練）',20,606)}
 requestAnimationFrame(draw)})();
 })();
